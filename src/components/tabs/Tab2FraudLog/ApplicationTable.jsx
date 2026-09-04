@@ -10,7 +10,7 @@ export default function ApplicationTable({
   Button,
   ArrowRight,
 }) {
-  if (loading) {
+  if (loading && !rows.length) {
     return (
       <p className="py-8 text-center text-sm text-slate-400">
         Loading applications…

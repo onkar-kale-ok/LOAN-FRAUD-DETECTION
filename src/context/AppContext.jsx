@@ -1,14 +1,31 @@
 import { createContext, useMemo, useState, useCallback } from 'react';
 import { ROLES } from './roles';
+import { mockScenarios } from '../data/mockScenarios';
 
 const AppContext = createContext(null);
+
+const seedApplications = mockScenarios.map((s) => ({
+  id: s.id,
+  applicantName: s.applicantName,
+  declaredIncome: s.declaredIncome,
+  ocrIncome: s.ocrIncome,
+  deviceId: s.deviceId,
+  ipAddress: s.ipAddress,
+  pan: s.pan,
+  phone: s.phone,
+  riskScore: s.riskScore,
+  riskTier: s.riskTier,
+  status: s.status,
+  redFlags: s.redFlags,
+  aiReviewerNote: s.aiReviewerNote,
+}));
 
 export function AppProvider({ children }) {
   const [userRole, setUserRoleState] = useState(() => {
     return localStorage.getItem('userRole') || 'ANALYST';
   });
   const [activeTab, setActiveTab] = useState('evaluation');
-  const [applications, setApplications] = useState([]);
+  const [applications, setApplications] = useState(seedApplications);
   const [evaluatedIds, setEvaluatedIds] = useState({});
   const [activeApplicationId, setActiveApplicationId] = useState('APP-2026-8842');
   const [latestResult, setLatestResult] = useState(null);

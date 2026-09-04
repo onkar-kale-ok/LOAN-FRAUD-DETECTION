@@ -26,10 +26,15 @@ export default function Tab3Assistant() {
     reset();
   }, [activeApplicationId, reset]);
 
-  const activeApp = useMemo(() => {
-    const found = applications.find((a) => a.id === activeApplicationId);
-    return found ? maskApplication(found, userRole) : null;
-  }, [applications, activeApplicationId, userRole]);
+  const maskedApps = useMemo(
+    () => applications.map((app) => maskApplication(app, userRole)),
+    [applications, userRole]
+  );
+
+  const activeApp = useMemo(
+    () => maskedApps.find((a) => a.id === activeApplicationId) || null,
+    [maskedApps, activeApplicationId]
+  );
 
   const handleSend = async (text) => {
     const prompt = (text ?? draft).trim();
@@ -53,7 +58,7 @@ export default function Tab3Assistant() {
         </div>
 
         <TargetSelector
-          applications={applications}
+          applications={maskedApps}
           value={activeApplicationId}
           onChange={setActiveApplicationId}
         />

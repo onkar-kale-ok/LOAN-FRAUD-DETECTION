@@ -137,7 +137,7 @@ export default function Tab1Evaluation() {
             Run AI Fraud Evaluation
           </Button>
           {error && <p className="text-sm text-rose-300">{error}</p>}
-          {!formData.applicantName && (
+          {!formData.applicantName && !loading && (
             <p className="text-sm text-slate-500">
               Select a scenario or enter an applicant name to continue.
             </p>
