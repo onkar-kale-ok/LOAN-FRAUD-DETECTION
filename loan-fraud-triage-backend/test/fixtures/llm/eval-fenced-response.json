@@ -1,0 +1,3 @@
+{
+  "response": "```json\n{\"riskScore\":42,\"riskTier\":\"MEDIUM\",\"redFlags\":[],\"aiReviewerNote\":\"Mixed signals.\"}\n```"
+}
