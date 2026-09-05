@@ -1,0 +1,9 @@
+{
+  "choices": [
+    {
+      "message": {
+        "content": "{\"risk_score\":12,\"risk_tier\":\"LOW\",\"red_flags\":[],\"ai_reviewer_note\":\"Clean application.\"}"
+      }
+    }
+  ]
+}

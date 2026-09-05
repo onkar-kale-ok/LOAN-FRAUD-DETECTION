@@ -1,0 +1,12 @@
+{
+  "riskScore": 88,
+  "riskTier": "HIGH",
+  "redFlags": [
+    {
+      "code": "INCOME_MISMATCH",
+      "label": "Income Mismatch",
+      "evidence": "Declared income far exceeds OCR bank income."
+    }
+  ],
+  "aiReviewerNote": "Recommend decline pending investigation."
+}

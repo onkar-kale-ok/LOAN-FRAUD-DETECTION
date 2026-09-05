@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#14b8a6"/>
+  <path d="M16 6l9 4v6c0 6.2-3.9 10.4-9 12-5.1-1.6-9-5.8-9-12V10l9-4z" fill="#020617"/>
+  <text x="40" y="21" fill="#e2e8f0" font-family="Outfit, sans-serif" font-size="14" font-weight="700">FraudGuard</text>
+</svg>

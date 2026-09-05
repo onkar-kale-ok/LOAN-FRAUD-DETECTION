@@ -1,0 +1,89 @@
+[
+  {
+    "scenarioId": "SCENARIO_HIGH_RISK",
+    "title": "Rahul Sharma — High Risk (Income Mismatch & Device Reuse)",
+    "description": "70% income discrepancy with 5 device reuses detected.",
+    "payload": {
+      "applicant": {
+        "name": "Rahul Sharma",
+        "companyName": "TechCorp Solutions Pvt Ltd",
+        "panNumber": "ABCDE1234F",
+        "phone": "+91 98765 43210",
+        "email": "rahul.sharma88@gmail.com"
+      },
+      "financials": {
+        "declaredIncome": 1800000,
+        "ocrBankIncome": 540000
+      },
+      "telemetry": {
+        "deviceId": "DEV-39482-PUN",
+        "ipAddress": "103.22.140.12",
+        "ipLocation": "Pune, MH, India (Proxy/VPN Flagged)",
+        "deviceReuseCount": 5
+      },
+      "documentOcr": {
+        "addressMatchScore": 42,
+        "documentTamperFlag": true,
+        "uploadedBankStatement": "Bank_Statement_Rahul_Sharma_Aug2026.pdf"
+      }
+    }
+  },
+  {
+    "scenarioId": "SCENARIO_LOW_RISK",
+    "title": "Ananya Verma — Low Risk (Verified Clean Application)",
+    "description": "Exact income match with high address verification confidence.",
+    "payload": {
+      "applicant": {
+        "name": "Ananya Verma",
+        "companyName": "Infosys Ltd",
+        "panNumber": "BGKPV6789M",
+        "phone": "+91 91234 56789",
+        "email": "ananya.verma@outlook.com"
+      },
+      "financials": {
+        "declaredIncome": 1200000,
+        "ocrBankIncome": 1200000
+      },
+      "telemetry": {
+        "deviceId": "DEV-10293-MUM",
+        "ipAddress": "182.70.12.99",
+        "ipLocation": "Mumbai, MH, India (Residential ISP)",
+        "deviceReuseCount": 1
+      },
+      "documentOcr": {
+        "addressMatchScore": 98,
+        "documentTamperFlag": false,
+        "uploadedBankStatement": "Bank_Statement_Ananya_Verma_Aug2026.pdf"
+      }
+    }
+  },
+  {
+    "scenarioId": "SCENARIO_MEDIUM_RISK",
+    "title": "Vikram Patel — Medium Risk (Moderate Address Variance)",
+    "description": "Slight income difference with moderate address mismatch.",
+    "payload": {
+      "applicant": {
+        "name": "Vikram Patel",
+        "companyName": "Reliance Industries Ltd",
+        "panNumber": "CJKPR4567N",
+        "phone": "+91 99887 76655",
+        "email": "vikram.patel@gmail.com"
+      },
+      "financials": {
+        "declaredIncome": 1600000,
+        "ocrBankIncome": 1100000
+      },
+      "telemetry": {
+        "deviceId": "DEV-88210-BLR",
+        "ipAddress": "115.240.90.14",
+        "ipLocation": "Bengaluru, KA, India",
+        "deviceReuseCount": 2
+      },
+      "documentOcr": {
+        "addressMatchScore": 60,
+        "documentTamperFlag": false,
+        "uploadedBankStatement": "Bank_Statement_Vikram_Patel_Aug2026.pdf"
+      }
+    }
+  }
+]
