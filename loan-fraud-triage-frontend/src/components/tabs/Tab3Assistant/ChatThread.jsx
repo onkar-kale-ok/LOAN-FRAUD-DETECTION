@@ -5,12 +5,14 @@ const RESPONSE_CHIPS = [
   {
     id: 'rejection',
     label: '⚡ Draft Formal Rejection Letter',
-    prompt: 'Draft Formal Rejection Letter',
+    prompt:
+      'Draft a short formal rejection letter using only this application\'s facts. Include applicationId, applicant name, risk tier, and the top two red flags.',
   },
   {
     id: 'graph',
     label: '⚡ Show Device Network Graph',
-    prompt: 'Show Device Network Graph',
+    prompt:
+      'In text, describe how this deviceId could link to other applications given reuse count. Do not claim a live graph.',
   },
 ];
 
