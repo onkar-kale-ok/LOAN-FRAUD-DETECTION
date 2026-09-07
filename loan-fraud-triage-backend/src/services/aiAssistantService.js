@@ -18,11 +18,26 @@ function formatRedFlags(flags) {
     .join('; ');
 }
 
+function formatIncomeGap(declared, ocr) {
+  const d = Number(declared);
+  const o = Number(ocr);
+  if (!Number.isFinite(d) || d <= 0 || !Number.isFinite(o)) return '—';
+  const gapPct = Math.round((Math.abs(d - o) / d) * 100);
+  return `${gapPct}% (declared vs OCR bank income)`;
+}
+
+function formatYesNo(value) {
+  if (value === true || value === 'true') return 'Yes';
+  if (value === false || value === 'false') return 'No';
+  return '—';
+}
+
 export function buildAssistantPrompt(record, userMessage) {
   const payload = record.payload || record;
   const applicant = payload.applicant || {};
   const financials = payload.financials || {};
   const telemetry = payload.telemetry || {};
+  const documentOcr = payload.documentOcr || record.documentOcr || {};
   const evaluationResult = record.evaluationResult || {};
 
   const aiSummary =
@@ -32,15 +47,34 @@ export function buildAssistantPrompt(record, userMessage) {
     '—';
 
   const redFlags = evaluationResult.redFlags || record.redFlags || [];
+  const incomeGap = formatIncomeGap(financials.declaredIncome, financials.ocrBankIncome);
 
   return [
+    'You are an underwriter copilot for ONE stored loan application.',
+    'Answer only from the Application Context below. If something is missing, say so. Do not invent PAN, income, device IDs, or scores.',
+    'Reply in concise professional prose (short bullets allowed). Do not return the evaluation JSON object (no riskScore/riskTier payload).',
+    'If the user asks for a graph or network, describe relationships in text; this UI cannot render a chart.',
+    '',
+    'Answer format:',
+    '- Lead with a direct answer in 1-2 sentences.',
+    '- Use bullets only when listing flags or anomalies.',
+    '- When citing facts, reference field names (e.g. declaredIncome, deviceReuseCount).',
+    '- Max ~200 words unless drafting a formal letter.',
+    '',
     'Application Context:',
     `- Application ID: ${record.applicationId || '—'}`,
     `- Applicant Name: ${applicant.name || '—'}`,
     `- Company Name: ${applicant.companyName || '—'}`,
+    `- PAN: ${applicant.panNumber || '—'}`,
+    `- Phone: ${applicant.phone || '—'}`,
+    `- Email: ${applicant.email || '—'}`,
     `- Declared Income: ${formatInr(financials.declaredIncome)}`,
     `- OCR Bank Income: ${formatInr(financials.ocrBankIncome)}`,
+    `- Income Gap: ${incomeGap}`,
+    `- Address Match Score: ${documentOcr.addressMatchScore ?? '—'}%`,
+    `- Document Tampering Flagged: ${formatYesNo(documentOcr.documentTamperFlag)}`,
     `- Device ID: ${telemetry.deviceId || '—'} (Reuse Count: ${telemetry.deviceReuseCount ?? '—'})`,
+    `- IP Address: ${telemetry.ipAddress || '—'}`,
     `- IP Location: ${telemetry.ipLocation || '—'}`,
     `- Risk Tier: ${evaluationResult.riskTier || record.riskTier || '—'}`,
     `- Risk Score: ${evaluationResult.riskScore ?? record.riskScore ?? '—'}/100`,
