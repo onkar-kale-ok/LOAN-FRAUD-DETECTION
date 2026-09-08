@@ -16,6 +16,10 @@ export const MESSAGES = {
   addressMatchScore: 'Address match score must be a percentage between 0 and 100.',
   deviceReuseCount: 'Reuse count must be an integer between 0 and 50.',
   email: 'Please enter a valid email address.',
+  declaredAddress: 'Declared address is required (street, city, PIN).',
+  ocrExtractedAddress: 'OCR extracted address is required.',
+  bankStatementSummary: 'Enter a short bank-statement summary (at least 10 characters).',
+  applicationTimestamp: 'Application timestamp is required.',
   applicantName: 'Full name must contain only letters and spaces (2-50 chars).',
   deviceId: 'Device ID must be at least 5 characters (e.g., DEV-39482-PUN).',
   ipLocation: 'IP Location is required.',
@@ -30,10 +34,13 @@ const REQUIRED_FIELDS = [
   'panNumber',
   'phoneNumber',
   'email',
+  'declaredAddress',
+  'ocrExtractedAddress',
+  'bankStatementSummary',
+  'applicationTimestamp',
   'declaredIncome',
   'ocrBankIncome',
   'addressMatchScore',
-  'deviceReuseCount',
   'deviceId',
   'ipAddress',
   'ipLocation',
@@ -144,6 +151,24 @@ export function validateField(field, value, formData = {}) {
     }
     case 'employmentType': {
       if (!EMPLOYMENT_TYPES.includes(value)) return MESSAGES.employmentType;
+      return '';
+    }
+    case 'declaredAddress': {
+      if (String(value ?? '').trim().length < 8) return MESSAGES.declaredAddress;
+      return '';
+    }
+    case 'ocrExtractedAddress': {
+      if (String(value ?? '').trim().length < 8) return MESSAGES.ocrExtractedAddress;
+      return '';
+    }
+    case 'bankStatementSummary': {
+      if (String(value ?? '').trim().length < 10) return MESSAGES.bankStatementSummary;
+      return '';
+    }
+    case 'applicationTimestamp': {
+      if (isBlank(value)) return MESSAGES.applicationTimestamp;
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return MESSAGES.applicationTimestamp;
       return '';
     }
     default:

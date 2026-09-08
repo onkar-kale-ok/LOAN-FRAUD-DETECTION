@@ -17,6 +17,7 @@ import {
   validateField,
   validateForm,
 } from '../../../utils/formValidation';
+import { computeAddressMatchScore, toDatetimeLocalValue } from '../../../utils/addressMatch';
 import { getScenarios } from '../../../services/fraudService';
 import { useFraudAnalysis } from '../../../hooks/useFraudAnalysis';
 import { useAppContext } from '../../../context';
@@ -44,19 +45,26 @@ function apiScenarioToFormData(scenario) {
     panNumber: applicant.panNumber || '',
     phoneNumber: applicant.phone || '',
     email: applicant.email || '',
+    declaredAddress: applicant.address || '',
+    employmentType: applicant.employmentType || 'Salaried',
     declaredIncome: financials.declaredIncome ?? '',
     ocrBankIncome: financials.ocrBankIncome ?? '',
+    bankStatementSummary: financials.bankStatementSummary || '',
+    applicationTimestamp: toDatetimeLocalValue(telemetry.applicationTimestamp),
     deviceId: telemetry.deviceId || '',
     ipAddress: telemetry.ipAddress || '',
     ipLocation: telemetry.ipLocation || '',
     deviceReuseCount: telemetry.deviceReuseCount ?? '',
     isVpnOrProxy: /vpn|proxy/i.test(String(telemetry.ipLocation || '')),
-    addressMatchScore: documentOcr.addressMatchScore ?? '',
     documentTamperFlag: Boolean(documentOcr.documentTamperFlag),
+    ocrExtractedAddress: documentOcr.ocrExtractedAddress || '',
     bankStatementFileName: documentOcr.uploadedBankStatement || '',
     bankStatementFileSize: '',
     bankStatementParsed: Boolean(documentOcr.uploadedBankStatement),
     bankStatementMock: Boolean(documentOcr.uploadedBankStatement),
+    addressMatchScore:
+      documentOcr.addressMatchScore ??
+      computeAddressMatchScore(applicant.address, documentOcr.ocrExtractedAddress),
   };
 }
 
@@ -153,6 +161,12 @@ export default function Tab1Evaluation() {
     const nextValue = field === 'panNumber' ? String(value).toUpperCase() : value;
     setFormData((prev) => {
       const next = { ...prev, [field]: nextValue };
+      if (field === 'declaredAddress' || field === 'ocrExtractedAddress') {
+        next.addressMatchScore = computeAddressMatchScore(
+          next.declaredAddress,
+          next.ocrExtractedAddress
+        );
+      }
       setJsonDraft(toJsonText(next));
       setFieldErrors((errs) => reconcileFieldError(errs, field, next));
       return next;

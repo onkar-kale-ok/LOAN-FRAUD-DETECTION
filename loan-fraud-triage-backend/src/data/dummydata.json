@@ -2,28 +2,33 @@
   {
     "scenarioId": "SCENARIO_HIGH_RISK",
     "title": "Rahul Sharma — High Risk (Income Mismatch & Device Reuse)",
-    "description": "70% income discrepancy with 5 device reuses detected.",
+    "description": "70% income discrepancy with shared device DEV-39482-PUN.",
     "payload": {
       "applicant": {
         "name": "Rahul Sharma",
         "companyName": "TechCorp Solutions Pvt Ltd",
         "panNumber": "ABCDE1234F",
         "phone": "+91 98765 43210",
-        "email": "rahul.sharma88@gmail.com"
+        "email": "rahul.sharma88@gmail.com",
+        "address": "12 MG Road, Koregaon Park, Pune, MH 411001",
+        "employmentType": "Salaried"
       },
       "financials": {
         "declaredIncome": 1800000,
-        "ocrBankIncome": 540000
+        "ocrBankIncome": 540000,
+        "bankStatementSummary": "HDFC salary credits avg ₹45,000/month (₹5.4L annualised). Several cash deposits. No TechCorp payroll narration."
       },
       "telemetry": {
         "deviceId": "DEV-39482-PUN",
         "ipAddress": "103.22.140.12",
         "ipLocation": "Pune, MH, India (Proxy/VPN Flagged)",
-        "deviceReuseCount": 5
+        "deviceReuseCount": 5,
+        "applicationTimestamp": "2026-08-12T09:30:00.000Z"
       },
       "documentOcr": {
         "addressMatchScore": 42,
         "documentTamperFlag": true,
+        "ocrExtractedAddress": "C/O R. Kulkarni, Lane 3, Viman Nagar, Pune, MH 411014",
         "uploadedBankStatement": "Bank_Statement_Rahul_Sharma_Aug2026.pdf"
       }
     }
@@ -38,21 +43,26 @@
         "companyName": "Infosys Ltd",
         "panNumber": "BGKPV6789M",
         "phone": "+91 91234 56789",
-        "email": "ananya.verma@outlook.com"
+        "email": "ananya.verma@outlook.com",
+        "address": "18 Indiranagar 12th Main, Bengaluru, KA 560038",
+        "employmentType": "Salaried"
       },
       "financials": {
         "declaredIncome": 1200000,
-        "ocrBankIncome": 1200000
+        "ocrBankIncome": 1200000,
+        "bankStatementSummary": "Infosys Ltd salary NEFT monthly ~₹1,00,000. Closing balance stable. No cash-heavy pattern."
       },
       "telemetry": {
         "deviceId": "DEV-10293-MUM",
         "ipAddress": "182.70.12.99",
         "ipLocation": "Mumbai, MH, India (Residential ISP)",
-        "deviceReuseCount": 1
+        "deviceReuseCount": 1,
+        "applicationTimestamp": "2026-08-20T11:15:00.000Z"
       },
       "documentOcr": {
         "addressMatchScore": 98,
         "documentTamperFlag": false,
+        "ocrExtractedAddress": "Ananya Verma, 18 Indiranagar 12th Main, Bengaluru, KA 560038",
         "uploadedBankStatement": "Bank_Statement_Ananya_Verma_Aug2026.pdf"
       }
     }
@@ -67,22 +77,61 @@
         "companyName": "Reliance Industries Ltd",
         "panNumber": "CJKPR4567N",
         "phone": "+91 99887 76655",
-        "email": "vikram.patel@gmail.com"
+        "email": "vikram.patel@gmail.com",
+        "address": "401 Satellite Road, Ahmedabad, GJ 380015",
+        "employmentType": "Self-Employed"
       },
       "financials": {
         "declaredIncome": 1600000,
-        "ocrBankIncome": 1100000
+        "ocrBankIncome": 1100000,
+        "bankStatementSummary": "Mixed UPI and supplier credits. Annualised inflows ~₹11L. No Reliance payroll line."
       },
       "telemetry": {
         "deviceId": "DEV-88210-BLR",
         "ipAddress": "115.240.90.14",
         "ipLocation": "Bengaluru, KA, India",
-        "deviceReuseCount": 2
+        "deviceReuseCount": 2,
+        "applicationTimestamp": "2026-08-25T16:45:00.000Z"
       },
       "documentOcr": {
         "addressMatchScore": 60,
         "documentTamperFlag": false,
+        "ocrExtractedAddress": "Vikram Patel, 9 CG Road, Navrangpura, Ahmedabad, GJ 380009",
         "uploadedBankStatement": "Bank_Statement_Vikram_Patel_Aug2026.pdf"
+      }
+    }
+  },
+  {
+    "scenarioId": "SCENARIO_RING",
+    "title": "Amit Sharma — Ring (shared device + phone with Rahul)",
+    "description": "Same device DEV-39482-PUN and same phone as Rahul — use after evaluating Rahul to see computed reuse and network edges.",
+    "payload": {
+      "applicant": {
+        "name": "Amit Sharma",
+        "companyName": "TechCorp Solutions Pvt Ltd",
+        "panNumber": "XYZAB1234C",
+        "phone": "+91 98765 43210",
+        "email": "amit.ring@gmail.com",
+        "address": "12 MG Road, Koregaon Park, Pune, MH 411001",
+        "employmentType": "Unemployed"
+      },
+      "financials": {
+        "declaredIncome": 2500000,
+        "ocrBankIncome": 180000,
+        "bankStatementSummary": "Sparse credits, mostly cash. No employer payroll. Declared ₹25L while unemployed."
+      },
+      "telemetry": {
+        "deviceId": "DEV-39482-PUN",
+        "ipAddress": "103.22.140.12",
+        "ipLocation": "Pune, MH, India (Proxy/VPN Flagged)",
+        "deviceReuseCount": 1,
+        "applicationTimestamp": "2026-08-13T10:00:00.000Z"
+      },
+      "documentOcr": {
+        "addressMatchScore": 40,
+        "documentTamperFlag": true,
+        "ocrExtractedAddress": "Hostel bunk, Viman Nagar, Pune, MH 411014",
+        "uploadedBankStatement": "Bank_Statement_Amit_Sharma_Aug2026.pdf"
       }
     }
   }

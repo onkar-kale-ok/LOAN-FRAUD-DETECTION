@@ -4,6 +4,7 @@ import {
   updateEvaluationById,
 } from '../services/storageService.js';
 import { buildApplicationList } from '../utils/applicationList.js';
+import { buildFraudNetwork } from '../utils/crossAppSignals.js';
 
 export {
   getApplicationTimestamp,
@@ -73,8 +74,22 @@ export async function patchApplicationDecision(req, res, next) {
   }
 }
 
+export async function getFraudNetwork(req, res, next) {
+  try {
+    const stored = await readJson(DATA_FILES.evaluations, []);
+    const graph = buildFraudNetwork(stored);
+    return res.status(200).json({
+      success: true,
+      ...graph,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 export default {
   listApplications,
   getApplicationById,
   patchApplicationDecision,
+  getFraudNetwork,
 };

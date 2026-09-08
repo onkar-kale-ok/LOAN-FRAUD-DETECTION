@@ -6,6 +6,9 @@ import {
   parseEvaluatePayload,
 } from '../schemas/evaluationSchema.js';
 import { generateApplicationId } from '../utils/idGenerator.js';
+import { computeAddressMatchScore } from '../utils/addressMatch.js';
+import { buildCrossAppSignals } from '../utils/crossAppSignals.js';
+import { assessSalaryVsRole } from '../utils/salaryHeuristic.js';
 
 export async function getScenarios(_req, res) {
   try {
@@ -44,9 +47,37 @@ export async function evaluateApplication(req, res, next) {
     const applicationId = generateApplicationId(existing);
     const pdfBuffer = req.file?.buffer;
 
+    const computedAddressMatch = computeAddressMatchScore(
+      inputData.applicant.address,
+      inputData.documentOcr.ocrExtractedAddress
+    );
+    const addressMatchScore =
+      inputData.documentOcr.addressMatchScore ?? computedAddressMatch;
+
+    const crossApp = buildCrossAppSignals(inputData, existing);
+    const salary = assessSalaryVsRole({
+      employmentType: inputData.applicant.employmentType,
+      declaredIncome: inputData.financials.declaredIncome,
+      companyName: inputData.applicant.companyName,
+    });
+
+    const enrichedInput = {
+      ...inputData,
+      telemetry: {
+        ...inputData.telemetry,
+        deviceReuseCount: crossApp.computedDeviceReuseCount,
+        reportedDeviceReuseCount: crossApp.reportedDeviceReuseCount,
+      },
+      documentOcr: {
+        ...inputData.documentOcr,
+        addressMatchScore,
+        computedAddressMatch,
+      },
+    };
+
     let engine;
     try {
-      engine = await runFraudEngine(inputData, pdfBuffer);
+      engine = await runFraudEngine(enrichedInput, pdfBuffer, { crossApp, salary });
     } catch (error) {
       if (error instanceof LlmClientError) {
         return res.status(error.status || 502).json({
@@ -65,20 +96,26 @@ export async function evaluateApplication(req, res, next) {
     }
 
     const evaluatedAt = new Date().toISOString();
+    const applicationTimestamp =
+      inputData.telemetry.applicationTimestamp || evaluatedAt;
 
     const record = {
       applicationId,
-      applicationTimestamp: evaluatedAt,
+      applicationTimestamp,
       evaluatedAt,
       decisionStatus: 'PENDING_REVIEW',
       reviewerNotes: '',
       applicant: inputData.applicant,
       financials: inputData.financials,
-      telemetry: inputData.telemetry,
+      telemetry: enrichedInput.telemetry,
       documentOcr: {
-        ...inputData.documentOcr,
+        ...enrichedInput.documentOcr,
         uploadedBankStatement:
           req.file?.originalname || inputData.documentOcr.uploadedBankStatement,
+      },
+      corpusSignals: {
+        ...crossApp,
+        salary,
       },
       bankStatement: req.file
         ? {
@@ -110,13 +147,20 @@ export async function evaluateApplication(req, res, next) {
       panNumber: inputData.applicant.panNumber,
       phoneNumber: inputData.applicant.phone,
       email: inputData.applicant.email,
+      address: inputData.applicant.address,
+      employmentType: inputData.applicant.employmentType,
       declaredIncome: inputData.financials.declaredIncome,
       ocrBankIncome: inputData.financials.ocrBankIncome,
-      deviceId: inputData.telemetry.deviceId,
+      bankStatementSummary: inputData.financials.bankStatementSummary,
+      deviceId: enrichedInput.telemetry.deviceId,
       ipAddress: inputData.telemetry.ipAddress,
       ipLocation: inputData.telemetry.ipLocation,
-      deviceReuseCount: inputData.telemetry.deviceReuseCount,
-      addressMatchScore: inputData.documentOcr.addressMatchScore,
+      deviceReuseCount: crossApp.computedDeviceReuseCount,
+      reportedDeviceReuseCount: crossApp.reportedDeviceReuseCount,
+      applicationTimestamp,
+      addressMatchScore,
+      computedAddressMatch,
+      ocrExtractedAddress: inputData.documentOcr.ocrExtractedAddress,
       documentTamperFlag: inputData.documentOcr.documentTamperFlag,
       bankStatementFileName:
         record.documentOcr.uploadedBankStatement ||

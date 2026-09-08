@@ -580,5 +580,268 @@
         "timestamp": "2026-09-08T10:03:44.831Z"
       }
     ]
+  },
+  {
+    "applicationId": "APP-2026-1006",
+    "applicationTimestamp": "2026-09-08T10:09:00.655Z",
+    "evaluatedAt": "2026-09-08T10:09:00.655Z",
+    "decisionStatus": "PENDING_REVIEW",
+    "reviewerNotes": "",
+    "applicant": {
+      "name": "Ritesh patil",
+      "companyName": "Infosys Ltd",
+      "panNumber": "BGKPV6789M",
+      "phone": "+91 91234 56789",
+      "email": "ananya.verma@outlook.com"
+    },
+    "financials": {
+      "declaredIncome": 1200000,
+      "ocrBankIncome": 1200000
+    },
+    "telemetry": {
+      "deviceId": "DEV-10293-MUM",
+      "ipAddress": "182.70.12.99",
+      "ipLocation": "Mumbai, MH, India (Residential ISP)",
+      "deviceReuseCount": 1
+    },
+    "documentOcr": {
+      "addressMatchScore": 98,
+      "documentTamperFlag": false,
+      "uploadedBankStatement": "Bank_Statement_Ananya_Verma_Aug2026.pdf"
+    },
+    "bankStatement": {
+      "originalName": "Bank_Statement_Ananya_Verma_Aug2026.pdf",
+      "attached": false,
+      "mock": true
+    },
+    "riskScore": 30,
+    "riskTier": "LOW",
+    "status": "CLEARED",
+    "redFlags": [
+      {
+        "code": "INCOME_MISMATCH",
+        "label": "Income mismatch",
+        "evidence": "Applicant name is Ritesh Patil but the uploaded bank statement is titled 'Bank_Statement_Ananya_Verma_Aug2026.pdf' and the email is ananya.verma@outlook.com, suggesting the financial document may belong to a different individual"
+      }
+    ],
+    "aiReviewerNote": "The application presents a significant identity consistency concern: the applicant is named Ritesh Patil, yet the uploaded bank statement references 'Ananya Verma' and the email address also belongs to Ananya Verma. All other signals are clean — declared income matches OCR bank income exactly at ₹12,00,000, device reuse is minimal (count 1), no document tampering detected, and the address match score is 98. An underwriter should request a fresh bank statement issued in Ritesh Patil's name along with a clarification for the email discrepancy before proceeding to sanction.",
+    "engineSource": "llm",
+    "evaluationResult": {
+      "applicationId": "APP-2026-1006",
+      "analyzedAt": "2026-09-08T10:09:00.655Z",
+      "applicantName": "Ritesh patil",
+      "companyName": "Infosys Ltd",
+      "panNumber": "BGKPV6789M",
+      "phoneNumber": "+91 91234 56789",
+      "email": "ananya.verma@outlook.com",
+      "declaredIncome": 1200000,
+      "ocrBankIncome": 1200000,
+      "deviceId": "DEV-10293-MUM",
+      "ipAddress": "182.70.12.99",
+      "ipLocation": "Mumbai, MH, India (Residential ISP)",
+      "deviceReuseCount": 1,
+      "addressMatchScore": 98,
+      "documentTamperFlag": false,
+      "bankStatementFileName": "Bank_Statement_Ananya_Verma_Aug2026.pdf",
+      "bankStatementParsed": true,
+      "riskScore": 30,
+      "riskTier": "LOW",
+      "status": "CLEARED",
+      "redFlags": [
+        {
+          "code": "INCOME_MISMATCH",
+          "label": "Income mismatch",
+          "evidence": "Applicant name is Ritesh Patil but the uploaded bank statement is titled 'Bank_Statement_Ananya_Verma_Aug2026.pdf' and the email is ananya.verma@outlook.com, suggesting the financial document may belong to a different individual"
+        }
+      ],
+      "aiReviewerNote": "The application presents a significant identity consistency concern: the applicant is named Ritesh Patil, yet the uploaded bank statement references 'Ananya Verma' and the email address also belongs to Ananya Verma. All other signals are clean — declared income matches OCR bank income exactly at ₹12,00,000, device reuse is minimal (count 1), no document tampering detected, and the address match score is 98. An underwriter should request a fresh bank statement issued in Ritesh Patil's name along with a clarification for the email discrepancy before proceeding to sanction.",
+      "engineSource": "llm"
+    }
+  },
+  {
+    "applicationId": "APP-2026-1007",
+    "applicationTimestamp": "2026-08-12T09:30:00.000Z",
+    "evaluatedAt": "2026-09-08T10:21:57.062Z",
+    "decisionStatus": "PENDING_REVIEW",
+    "reviewerNotes": "",
+    "applicant": {
+      "name": "Rahul Sharma",
+      "companyName": "TechCorp Solutions Pvt Ltd",
+      "panNumber": "ABCDE1234F",
+      "phone": "+91 98765 43210",
+      "email": "rahul.sharma88@gmail.com",
+      "address": "12 MG Road, Koregaon Park, Pune, MH 411001",
+      "employmentType": "Salaried"
+    },
+    "financials": {
+      "declaredIncome": 1800000,
+      "ocrBankIncome": 540000,
+      "bankStatementSummary": "HDFC salary credits avg ₹45,000/month (₹5.4L annualised). Several cash deposits. No TechCorp payroll narration."
+    },
+    "telemetry": {
+      "deviceId": "DEV-39482-PUN",
+      "ipAddress": "103.22.140.12",
+      "ipLocation": "Pune, MH, India (Proxy/VPN Flagged)",
+      "deviceReuseCount": 4,
+      "applicationTimestamp": "2026-08-12T09:30:00.000Z",
+      "reportedDeviceReuseCount": 5
+    },
+    "documentOcr": {
+      "addressMatchScore": 42,
+      "documentTamperFlag": true,
+      "uploadedBankStatement": "Bank_Statement_Rahul_Sharma_Aug2026.pdf",
+      "ocrExtractedAddress": "C/O R. Kulkarni, Lane 3, Viman Nagar, Pune, MH 411014",
+      "computedAddressMatch": 25
+    },
+    "corpusSignals": {
+      "computedDeviceReuseCount": 4,
+      "reportedDeviceReuseCount": 5,
+      "deviceMatches": [
+        "APP-2026-1001",
+        "APP-2026-1003",
+        "APP-2026-1005"
+      ],
+      "phoneMatches": [
+        "APP-2026-1001",
+        "APP-2026-1003",
+        "APP-2026-1005"
+      ],
+      "emailMatches": [
+        "APP-2026-1001",
+        "APP-2026-1003",
+        "APP-2026-1005"
+      ],
+      "addressMatches": [],
+      "employerMatches": [
+        "APP-2026-1001",
+        "APP-2026-1003",
+        "APP-2026-1005"
+      ],
+      "duplicatePhone": true,
+      "duplicateEmail": true,
+      "salary": {
+        "employmentType": "Salaried",
+        "declaredIncome": 1800000,
+        "threshold": 4000000,
+        "flagged": false,
+        "code": "HIGH_SALARY_VS_ROLE",
+        "evidence": "Declared income is within the Salaried band used for this prototype."
+      }
+    },
+    "bankStatement": {
+      "originalName": "Bank_Statement_Rahul_Sharma_Aug2026.pdf",
+      "attached": false,
+      "mock": true
+    },
+    "riskScore": 95,
+    "riskTier": "BLOCK",
+    "status": "FLAGGED",
+    "redFlags": [
+      {
+        "code": "INCOME_MISMATCH",
+        "label": "Income mismatch",
+        "evidence": "Declared annual income is ₹18,00,000, but bank statement summary shows average monthly salary credits of ₹45,000 (₹5.4L annualised), a gap exceeding 70%. No TechCorp payroll narration found in statement."
+      },
+      {
+        "code": "DOCUMENT_TAMPER",
+        "label": "Document tamper suspected",
+        "evidence": "documentTamperFlag is true on the uploaded file Bank_Statement_Rahul_Sharma_Aug2026.pdf. Several unexplained cash deposits also noted in statement summary."
+      },
+      {
+        "code": "ADDRESS_MISMATCH",
+        "label": "Address mismatch",
+        "evidence": "Declared address is 12 MG Road, Koregaon Park, Pune 411001; OCR-extracted address is C/O R. Kulkarni, Lane 3, Viman Nagar, Pune 411014. Computed token-overlap score is 25, well below the 50-point threshold. These are materially different localities and PIN codes."
+      },
+      {
+        "code": "DEVICE_REUSE",
+        "label": "Device reuse across multiple applications",
+        "evidence": "Device DEV-39482-PUN matches prior applications APP-2026-1001, APP-2026-1003, and APP-2026-1005. Corpus-computed device reuse count is 4."
+      },
+      {
+        "code": "DUPLICATE_PHONE",
+        "label": "Duplicate phone number on prior applications",
+        "evidence": "Phone +91 98765 43210 appears in prior applications APP-2026-1001, APP-2026-1003, and APP-2026-1005."
+      },
+      {
+        "code": "DUPLICATE_EMAIL",
+        "label": "Duplicate email on prior applications",
+        "evidence": "Email rahul.sharma88@gmail.com appears in prior applications APP-2026-1001, APP-2026-1003, and APP-2026-1005."
+      },
+      {
+        "code": "VPN_OR_PROXY",
+        "label": "VPN or proxy connection indicated",
+        "evidence": "IP address 103.22.140.12 is flagged as Proxy/VPN in ipLocation field at application timestamp 2026-08-12T09:30:00Z."
+      }
+    ],
+    "aiReviewerNote": "This application exhibits multiple concurrent suspicion signals that together warrant a Block/Review outcome. The declared annual income of ₹18,00,000 is approximately 3.3 times the ₹5.4L annualised figure observed in bank statement credits, and no payroll narration from the stated employer TechCorp Solutions Pvt Ltd is present. The uploaded bank statement carries a document tamper flag, and the OCR-extracted address (Viman Nagar, PIN 411014) is materially inconsistent with the declared address (Koregaon Park, PIN 411001), with a token-overlap score of only 25. Additionally, the same device ID, phone number, and email address all recur across at least three prior corpus applications (APP-2026-1001, APP-2026-1003, APP-2026-1005), and the session was conducted over a flagged VPN/proxy connection; investigators should assess whether these applications form a coordinated cluster before any credit decision is made.",
+    "engineSource": "llm",
+    "evaluationResult": {
+      "applicationId": "APP-2026-1007",
+      "analyzedAt": "2026-09-08T10:21:57.062Z",
+      "applicantName": "Rahul Sharma",
+      "companyName": "TechCorp Solutions Pvt Ltd",
+      "panNumber": "ABCDE1234F",
+      "phoneNumber": "+91 98765 43210",
+      "email": "rahul.sharma88@gmail.com",
+      "address": "12 MG Road, Koregaon Park, Pune, MH 411001",
+      "employmentType": "Salaried",
+      "declaredIncome": 1800000,
+      "ocrBankIncome": 540000,
+      "bankStatementSummary": "HDFC salary credits avg ₹45,000/month (₹5.4L annualised). Several cash deposits. No TechCorp payroll narration.",
+      "deviceId": "DEV-39482-PUN",
+      "ipAddress": "103.22.140.12",
+      "ipLocation": "Pune, MH, India (Proxy/VPN Flagged)",
+      "deviceReuseCount": 4,
+      "reportedDeviceReuseCount": 5,
+      "applicationTimestamp": "2026-08-12T09:30:00.000Z",
+      "addressMatchScore": 42,
+      "computedAddressMatch": 25,
+      "ocrExtractedAddress": "C/O R. Kulkarni, Lane 3, Viman Nagar, Pune, MH 411014",
+      "documentTamperFlag": true,
+      "bankStatementFileName": "Bank_Statement_Rahul_Sharma_Aug2026.pdf",
+      "bankStatementParsed": true,
+      "riskScore": 95,
+      "riskTier": "BLOCK",
+      "status": "FLAGGED",
+      "redFlags": [
+        {
+          "code": "INCOME_MISMATCH",
+          "label": "Income mismatch",
+          "evidence": "Declared annual income is ₹18,00,000, but bank statement summary shows average monthly salary credits of ₹45,000 (₹5.4L annualised), a gap exceeding 70%. No TechCorp payroll narration found in statement."
+        },
+        {
+          "code": "DOCUMENT_TAMPER",
+          "label": "Document tamper suspected",
+          "evidence": "documentTamperFlag is true on the uploaded file Bank_Statement_Rahul_Sharma_Aug2026.pdf. Several unexplained cash deposits also noted in statement summary."
+        },
+        {
+          "code": "ADDRESS_MISMATCH",
+          "label": "Address mismatch",
+          "evidence": "Declared address is 12 MG Road, Koregaon Park, Pune 411001; OCR-extracted address is C/O R. Kulkarni, Lane 3, Viman Nagar, Pune 411014. Computed token-overlap score is 25, well below the 50-point threshold. These are materially different localities and PIN codes."
+        },
+        {
+          "code": "DEVICE_REUSE",
+          "label": "Device reuse across multiple applications",
+          "evidence": "Device DEV-39482-PUN matches prior applications APP-2026-1001, APP-2026-1003, and APP-2026-1005. Corpus-computed device reuse count is 4."
+        },
+        {
+          "code": "DUPLICATE_PHONE",
+          "label": "Duplicate phone number on prior applications",
+          "evidence": "Phone +91 98765 43210 appears in prior applications APP-2026-1001, APP-2026-1003, and APP-2026-1005."
+        },
+        {
+          "code": "DUPLICATE_EMAIL",
+          "label": "Duplicate email on prior applications",
+          "evidence": "Email rahul.sharma88@gmail.com appears in prior applications APP-2026-1001, APP-2026-1003, and APP-2026-1005."
+        },
+        {
+          "code": "VPN_OR_PROXY",
+          "label": "VPN or proxy connection indicated",
+          "evidence": "IP address 103.22.140.12 is flagged as Proxy/VPN in ipLocation field at application timestamp 2026-08-12T09:30:00Z."
+        }
+      ],
+      "aiReviewerNote": "This application exhibits multiple concurrent suspicion signals that together warrant a Block/Review outcome. The declared annual income of ₹18,00,000 is approximately 3.3 times the ₹5.4L annualised figure observed in bank statement credits, and no payroll narration from the stated employer TechCorp Solutions Pvt Ltd is present. The uploaded bank statement carries a document tamper flag, and the OCR-extracted address (Viman Nagar, PIN 411014) is materially inconsistent with the declared address (Koregaon Park, PIN 411001), with a token-overlap score of only 25. Additionally, the same device ID, phone number, and email address all recur across at least three prior corpus applications (APP-2026-1001, APP-2026-1003, APP-2026-1005), and the session was conducted over a flagged VPN/proxy connection; investigators should assess whether these applications form a coordinated cluster before any credit decision is made.",
+      "engineSource": "llm"
+    }
   }
 ]

@@ -1,30 +1,24 @@
+import { getRiskColorClasses, getRiskTier } from '../../utils/formatters';
+
 /**
- * Gauge coloring uses the evaluation UI bands:
- * Red > 70, Yellow 31–70, Green 0–30.
+ * Gauge bands match prompt, backend, and RiskBadge:
+ * HIGH >= 75, MEDIUM >= 40, LOW 0–39.
  */
 export function getGaugeBand(score) {
-  const value = Number(score);
-  if (!Number.isFinite(value) || value > 70) {
-    return {
-      label: 'High',
-      bar: 'bg-red-500',
-      track: 'bg-red-500/15',
-      text: 'text-red-400',
-    };
-  }
-  if (value >= 31) {
-    return {
-      label: 'Medium',
-      bar: 'bg-amber-400',
-      track: 'bg-amber-400/15',
-      text: 'text-amber-300',
-    };
-  }
+  const colors = getRiskColorClasses(score);
+  const tier = getRiskTier(score);
   return {
-    label: 'Low',
-    bar: 'bg-emerald-500',
-    track: 'bg-emerald-500/15',
-    text: 'text-emerald-300',
+    label: tier,
+    bar: colors.bar,
+    track:
+      tier === 'BLOCK'
+        ? 'bg-fuchsia-500/15'
+        : tier === 'HIGH'
+        ? 'bg-rose-500/15'
+        : tier === 'MEDIUM'
+          ? 'bg-amber-500/15'
+          : 'bg-emerald-500/15',
+    text: colors.text,
   };
 }
 
@@ -50,13 +44,14 @@ export default function RiskGauge({ score = 0 }) {
           aria-valuenow={value}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Risk score ${value} out of 100`}
+          aria-label={`Risk score ${value} out of 100, ${band.label}`}
         />
       </div>
       <div className="mt-1.5 flex justify-between text-[10px] uppercase tracking-wider text-slate-500">
         <span>0</span>
-        <span>31</span>
-        <span>70</span>
+        <span>40</span>
+        <span>75</span>
+        <span>90</span>
         <span>100</span>
       </div>
     </div>

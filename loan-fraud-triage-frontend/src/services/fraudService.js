@@ -1,4 +1,5 @@
 import api from './api';
+import { computeAddressMatchScore, fromDatetimeLocalValue } from '../utils/addressMatch';
 
 export function buildEvaluatePayload(formData = {}) {
   return {
@@ -10,21 +11,28 @@ export function buildEvaluatePayload(formData = {}) {
         .toUpperCase(),
       phone: String(formData.phoneNumber || formData.phone || '').trim(),
       email: String(formData.email || '').trim(),
+      address: String(formData.declaredAddress || formData.address || '').trim(),
+      employmentType: String(formData.employmentType || 'Salaried').trim(),
     },
     financials: {
       declaredIncome: Number(formData.declaredIncome) || 0,
       ocrBankIncome: Number(formData.ocrBankIncome) || 0,
+      bankStatementSummary: String(formData.bankStatementSummary || '').trim(),
     },
     telemetry: {
       deviceId: String(formData.deviceId || '').trim(),
       ipAddress: String(formData.ipAddress || '').trim(),
       ipLocation: String(formData.ipLocation || '').trim(),
       deviceReuseCount: Number(formData.deviceReuseCount) || 0,
+      applicationTimestamp: fromDatetimeLocalValue(formData.applicationTimestamp),
     },
     documentOcr: {
-      addressMatchScore: Number(formData.addressMatchScore) || 0,
+      addressMatchScore:
+        Number(formData.addressMatchScore) ||
+        computeAddressMatchScore(formData.declaredAddress, formData.ocrExtractedAddress),
       documentTamperFlag: Boolean(formData.documentTamperFlag),
       uploadedBankStatement: formData.bankStatementFileName || undefined,
+      ocrExtractedAddress: String(formData.ocrExtractedAddress || '').trim(),
     },
   };
 }
@@ -160,6 +168,15 @@ export async function getChatHistory(id) {
   return Array.isArray(history) ? history : [];
 }
 
+export async function getFraudNetwork() {
+  const response = await api.get('/v1/network');
+  return {
+    nodes: response.data?.nodes || [],
+    edges: response.data?.edges || [],
+    counts: response.data?.counts || { nodes: 0, edges: 0 },
+  };
+}
+
 export async function getScenarios() {
   const response = await api.get('/v1/scenarios');
   return response.data;
@@ -174,6 +191,7 @@ const fraudService = {
   sendAssistantQuery,
   getChatHistory,
   getScenarios,
+  getFraudNetwork,
 };
 
 export default fraudService;

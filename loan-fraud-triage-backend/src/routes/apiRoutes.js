@@ -6,6 +6,7 @@ import {
 } from '../controllers/evaluationController.js';
 import {
   getApplicationById,
+  getFraudNetwork,
   listApplications,
   patchApplicationDecision,
 } from '../controllers/applicationController.js';
@@ -43,6 +44,7 @@ function handleBankStatementUpload(req, res, next) {
 router.get('/scenarios', getScenarios);
 router.post('/evaluate', handleBankStatementUpload, evaluateApplication);
 router.get('/applications', listApplications);
+router.get('/network', getFraudNetwork);
 router.patch(
   '/applications/:id/decision',
   requireAnalyst,

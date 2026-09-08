@@ -45,10 +45,14 @@ export function formatDate(iso, locale = 'en-IN') {
 
 export function getRiskTier(scoreOrTier) {
   if (typeof scoreOrTier === 'string') {
-    const upper = scoreOrTier.toUpperCase();
+    const upper = scoreOrTier.toUpperCase().replace(/[\s/-]+/g, '_');
+    if (upper === 'BLOCK' || upper === 'BLOCK_REVIEW' || upper === 'BLOCKREVIEW') {
+      return 'BLOCK';
+    }
     if (['HIGH', 'MEDIUM', 'LOW'].includes(upper)) return upper;
   }
   const score = Number(scoreOrTier);
+  if (score >= 90) return 'BLOCK';
   if (score >= 75) return 'HIGH';
   if (score >= 40) return 'MEDIUM';
   return 'LOW';
@@ -57,6 +61,14 @@ export function getRiskTier(scoreOrTier) {
 export function getRiskColorClasses(tierOrScore) {
   const tier = getRiskTier(tierOrScore);
   switch (tier) {
+    case 'BLOCK':
+      return {
+        tier: 'BLOCK / REVIEW',
+        badge: 'bg-fuchsia-500/15 text-fuchsia-300 ring-1 ring-fuchsia-400/40',
+        bar: 'bg-fuchsia-500',
+        text: 'text-fuchsia-300',
+        border: 'border-fuchsia-500/30',
+      };
     case 'HIGH':
       return {
         tier: 'HIGH',

@@ -110,6 +110,17 @@ export default function ResultPanel({ result, loading }) {
     >
       <div className="space-y-5">
         <RiskGauge score={result.riskScore} />
+        {result.deviceReuseCount != null && (
+          <p className="text-xs text-slate-500">
+            Device reuse computed from stored applications: {result.deviceReuseCount}
+            {result.reportedDeviceReuseCount != null
+              ? ` (form reported ${result.reportedDeviceReuseCount})`
+              : ''}
+            {result.computedAddressMatch != null
+              ? ` · Address overlap ${result.computedAddressMatch}%`
+              : ''}
+          </p>
+        )}
         <ComparisonTable result={result} />
 
         <div>
@@ -129,9 +140,11 @@ export default function ResultPanel({ result, loading }) {
                   />
                   <div>
                     <p className="text-sm font-semibold text-rose-200">
-                      {flag.label}
+                      {flag.label || flag.code || 'Flag'}
                     </p>
-                    <p className="mt-0.5 text-sm text-slate-400">{flag.evidence}</p>
+                    <p className="mt-0.5 text-sm text-slate-400">
+                      {flag.evidence || 'No evidence provided.'}
+                    </p>
                   </div>
                 </li>
               ))}

@@ -188,7 +188,10 @@ export default function BankStatementUploader({
           <FieldError message={errors.ocrBankIncome} />
         </label>
         <label className="block">
-          <FieldLabel>Address Match Score %</FieldLabel>
+          <FieldLabel>Address Match % (declared vs OCR)</FieldLabel>
+          <p className="mb-1.5 text-[11px] text-slate-500">
+            Auto-computed from declared address vs OCR address. You can override.
+          </p>
           <input
             type="number"
             min={0}
@@ -210,8 +213,23 @@ export default function BankStatementUploader({
             onChange={(e) => onChange('ocrExtractedAddress', e.target.value)}
             onBlur={() => onBlur?.('ocrExtractedAddress')}
             placeholder="Address extracted from bank statement OCR"
-            className={inputClass(false)}
+            className={inputClass(errors.ocrExtractedAddress)}
+            aria-invalid={Boolean(errors.ocrExtractedAddress)}
           />
+          <FieldError message={errors.ocrExtractedAddress} />
+        </label>
+        <label className="block sm:col-span-2">
+          <FieldLabel>Bank Statement Summary</FieldLabel>
+          <textarea
+            rows={3}
+            value={formData.bankStatementSummary ?? ''}
+            onChange={(e) => onChange('bankStatementSummary', e.target.value)}
+            onBlur={() => onBlur?.('bankStatementSummary')}
+            placeholder="Salary credits, cash deposits, employer narration, annualised inflows"
+            className={inputClass(errors.bankStatementSummary)}
+            aria-invalid={Boolean(errors.bankStatementSummary)}
+          />
+          <FieldError message={errors.bankStatementSummary} />
         </label>
         <div className="sm:col-span-2">
           <ToggleField

@@ -40,7 +40,7 @@ export function buildComparisonRows(result = {}) {
     },
     {
       field: 'Address / Location',
-      declared: result.ipLocation || '—',
+      declared: result.declaredAddress || result.address || result.ipLocation || '—',
       ocr: result.ocrExtractedAddress || '—',
       variance: varianceStatus(addressFlagged, addressText),
     },

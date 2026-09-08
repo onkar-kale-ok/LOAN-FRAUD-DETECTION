@@ -140,7 +140,7 @@ Chat is disabled until you select an evaluated application.
 | `GET` | `/health` | Liveness (no `/api` prefix) |
 | `GET` | `/api/v1/scenarios` | Tab 1 presets |
 | `POST` | `/api/v1/evaluate` | Tab 1 run evaluation (`multipart`, field `bankStatement`) |
-| `GET` | `/api/v1/applications` | Tab 2 / Tab 3 list (`?riskTier=` optional) |
+| `GET` | `/api/v1/network` | Network tab (shared device/phone/email/address/employer) |
 | `GET` | `/api/v1/applications/:id` | Tab 2 details |
 | `PATCH` | `/api/v1/applications/:id/decision` | Tab 2 decision |
 | `GET` | `/api/v1/applications/:id/chat/history` | Tab 3 history |
@@ -170,6 +170,9 @@ Preset JSON only **fills the form**. Scores and chat answers always come from th
 3. In Tab 1, pick a scenario and click **Run AI Fraud Evaluation**.
 4. When the wrapper token is valid, a result appears and a row is written to `evaluation.json`.
 5. Open Tab 2 — the row is there; open details or set a decision.
-6. Open Tab 3 — select that application ID and ask a question (for example “Why is this High Risk?”).
+6. Evaluate **Rahul** then **Amit Sharma** (ring scenario) to see computed device reuse, duplicate phone, and **Network** edges.
+7. Open Tab 3 — select that application ID and ask a question (for example “Why is this High Risk?”).
+
+Risk tiers: **LOW** (&lt;40), **MEDIUM** (≥40), **HIGH** (≥75), **BLOCK / REVIEW** (≥90 or severe ring + salary flag). Device reuse and duplicate phone/email are computed from `evaluation.json`, not only the form.
 
 If the LLM token is not active yet, evaluate and chat return a provider error and **do not** invent a score. Retry after the token is enabled; no code change is required unless you override `LLM_WRAPPER_TOKEN`.

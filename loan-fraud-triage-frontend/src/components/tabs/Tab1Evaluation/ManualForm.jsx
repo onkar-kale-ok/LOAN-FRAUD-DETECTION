@@ -217,6 +217,30 @@ export default function ManualForm({
           error={err('declaredIncome')}
           placeholder="1800000"
         />
+        <label className="block sm:col-span-2">
+          <FieldLabel htmlFor="declaredAddress">Declared Address</FieldLabel>
+          <textarea
+            id="declaredAddress"
+            name="declaredAddress"
+            rows={2}
+            value={formData.declaredAddress ?? ''}
+            onChange={(e) => onChange('declaredAddress', e.target.value)}
+            onBlur={() => onBlur?.('declaredAddress')}
+            placeholder="Street, city, state, PIN"
+            className={inputClass(err('declaredAddress'))}
+            aria-invalid={Boolean(err('declaredAddress'))}
+          />
+          <FieldError id="declaredAddress-error" message={err('declaredAddress')} />
+        </label>
+        <TextField
+          name="applicationTimestamp"
+          label="Application Timestamp"
+          type="datetime-local"
+          value={formData.applicationTimestamp}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={err('applicationTimestamp')}
+        />
       </FormSection>
 
       <FormSection icon={Smartphone} title="Device & Network Telemetry">
@@ -249,7 +273,7 @@ export default function ManualForm({
         />
         <TextField
           name="deviceReuseCount"
-          label="Device Reuse Count (30 days)"
+          label="Reported Device Reuse (optional)"
           type="number"
           min={0}
           max={50}
@@ -257,7 +281,7 @@ export default function ManualForm({
           onChange={onChange}
           onBlur={onBlur}
           error={err('deviceReuseCount')}
-          placeholder="4"
+          placeholder="Server recomputes from stored apps"
         />
         <div className="sm:col-span-2">
           <ToggleField

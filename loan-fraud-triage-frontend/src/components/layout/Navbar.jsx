@@ -1,9 +1,10 @@
-import { ClipboardCheck, Table2, Bot } from 'lucide-react';
+import { ClipboardCheck, Table2, Bot, Share2 } from 'lucide-react';
 import { useAppContext } from '../../context';
 
 const TABS = [
   { id: 'evaluation', label: 'New Evaluation', icon: ClipboardCheck },
   { id: 'fraudLog', label: 'Fraud Log', icon: Table2 },
+  { id: 'network', label: 'Network', icon: Share2 },
   { id: 'assistant', label: 'AI Assistant', icon: Bot },
 ];
 
