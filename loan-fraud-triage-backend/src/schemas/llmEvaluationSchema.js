@@ -13,7 +13,12 @@ export const llmEvaluationSchema = z.object({
   riskTier: z
     .string()
     .optional()
-    .transform((value) => (value ? String(value).toUpperCase() : value)),
+    .transform((value) => {
+      if (!value) return value;
+      const upper = String(value).toUpperCase().replace(/[\s/-]+/g, '_');
+      if (upper === 'BLOCK_REVIEW' || upper === 'BLOCKREVIEW') return 'BLOCK';
+      return upper;
+    }),
   redFlags: z.array(redFlagSchema).optional().default([]),
   aiReviewerNote: z.string().optional().default(''),
 });

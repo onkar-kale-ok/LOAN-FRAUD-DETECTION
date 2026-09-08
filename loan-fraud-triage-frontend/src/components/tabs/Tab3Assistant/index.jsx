@@ -88,9 +88,9 @@ export default function Tab3Assistant() {
             · Risk {activeApp.riskTier} ({activeApp.riskScore})
           </p>
         )}
-        {activeApp && !isAnalyst && (
+        {!isAnalyst && (
           <p className="mt-3 text-sm text-amber-300">
-            Guest role can view this application but cannot send chat messages.
+            Guest can view applications and history but cannot send chat messages.
           </p>
         )}
       </Card>
@@ -134,9 +134,11 @@ export default function Tab3Assistant() {
           <input
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            disabled={!activeApplicationId || loading}
+            disabled={!canChat}
             placeholder={
-              activeApplicationId
+              !isAnalyst
+                ? 'Guest cannot send chat messages…'
+                : activeApplicationId
                 ? 'Ask about risk drivers, income, or device signals…'
                 : 'Select an application first…'
             }

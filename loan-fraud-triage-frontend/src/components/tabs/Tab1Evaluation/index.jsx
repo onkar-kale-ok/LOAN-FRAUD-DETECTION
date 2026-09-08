@@ -17,6 +17,7 @@ import {
   validateField,
   validateForm,
 } from '../../../utils/formValidation';
+import { computeAddressMatchScore, toDatetimeLocalValue } from '../../../utils/addressMatch';
 import { getScenarios } from '../../../services/fraudService';
 import { useFraudAnalysis } from '../../../hooks/useFraudAnalysis';
 import { useAppContext } from '../../../context';
@@ -44,24 +45,31 @@ function apiScenarioToFormData(scenario) {
     panNumber: applicant.panNumber || '',
     phoneNumber: applicant.phone || '',
     email: applicant.email || '',
+    declaredAddress: applicant.address || '',
+    employmentType: applicant.employmentType || 'Salaried',
     declaredIncome: financials.declaredIncome ?? '',
     ocrBankIncome: financials.ocrBankIncome ?? '',
+    bankStatementSummary: financials.bankStatementSummary || '',
+    applicationTimestamp: toDatetimeLocalValue(telemetry.applicationTimestamp),
     deviceId: telemetry.deviceId || '',
     ipAddress: telemetry.ipAddress || '',
     ipLocation: telemetry.ipLocation || '',
     deviceReuseCount: telemetry.deviceReuseCount ?? '',
     isVpnOrProxy: /vpn|proxy/i.test(String(telemetry.ipLocation || '')),
-    addressMatchScore: documentOcr.addressMatchScore ?? '',
     documentTamperFlag: Boolean(documentOcr.documentTamperFlag),
+    ocrExtractedAddress: documentOcr.ocrExtractedAddress || '',
     bankStatementFileName: documentOcr.uploadedBankStatement || '',
     bankStatementFileSize: '',
     bankStatementParsed: Boolean(documentOcr.uploadedBankStatement),
     bankStatementMock: Boolean(documentOcr.uploadedBankStatement),
+    addressMatchScore:
+      documentOcr.addressMatchScore ??
+      computeAddressMatchScore(applicant.address, documentOcr.ocrExtractedAddress),
   };
 }
 
 export default function Tab1Evaluation() {
-  const { evaluatedIds } = useAppContext();
+  const { evaluatedIds, userRole } = useAppContext();
   const [selectedScenarioId, setSelectedScenarioId] = useState('');
   const [viewMode, setViewMode] = useState('form');
   const [formData, setFormData] = useState({ ...emptyApplicationForm });
@@ -153,6 +161,12 @@ export default function Tab1Evaluation() {
     const nextValue = field === 'panNumber' ? String(value).toUpperCase() : value;
     setFormData((prev) => {
       const next = { ...prev, [field]: nextValue };
+      if (field === 'declaredAddress' || field === 'ocrExtractedAddress') {
+        next.addressMatchScore = computeAddressMatchScore(
+          next.declaredAddress,
+          next.ocrExtractedAddress
+        );
+      }
       setJsonDraft(toJsonText(next));
       setFieldErrors((errs) => reconcileFieldError(errs, field, next));
       return next;
@@ -205,6 +219,7 @@ export default function Tab1Evaluation() {
   };
 
   const handleAnalyze = async () => {
+    if (userRole !== 'ANALYST') return;
     setSubmitAttempted(true);
     if (jsonError) return;
     const errors = validateForm(formData);
@@ -291,7 +306,7 @@ export default function Tab1Evaluation() {
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <Button
             onClick={handleAnalyze}
-            disabled={loading || !!jsonError}
+            disabled={loading || !!jsonError || userRole !== 'ANALYST'}
             size="lg"
           >
             {loading ? (
@@ -301,6 +316,11 @@ export default function Tab1Evaluation() {
             )}
             Run AI Fraud Evaluation
           </Button>
+          {userRole !== 'ANALYST' && (
+            <p className="text-sm text-amber-300">
+              Guest can view presets and results already on screen; running a new evaluation requires Analyst.
+            </p>
+          )}
           {error && <p className="text-sm text-rose-300">{error}</p>}
           {jsonError && (
             <p className="text-sm text-red-500">

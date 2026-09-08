@@ -6,12 +6,13 @@ import {
 } from '../controllers/evaluationController.js';
 import {
   getApplicationById,
+  getFraudNetwork,
   listApplications,
   patchApplicationDecision,
 } from '../controllers/applicationController.js';
 import { getHistory, postChat } from '../controllers/chatController.js';
 import { validateBody } from '../middleware/validateMiddleware.js';
-import { requireAnalyst } from '../middleware/rbacMiddleware.js';
+import { requireAnalyst, requireReviewer } from '../middleware/rbacMiddleware.js';
 import { decisionBodySchema } from '../schemas/decisionSchema.js';
 
 const router = Router();
@@ -40,17 +41,23 @@ function handleBankStatementUpload(req, res, next) {
   });
 }
 
-router.get('/scenarios', getScenarios);
-router.post('/evaluate', handleBankStatementUpload, evaluateApplication);
-router.get('/applications', listApplications);
+router.get('/scenarios', requireReviewer, getScenarios);
+router.post(
+  '/evaluate',
+  requireAnalyst,
+  handleBankStatementUpload,
+  evaluateApplication
+);
+router.get('/applications', requireReviewer, listApplications);
+router.get('/network', requireReviewer, getFraudNetwork);
 router.patch(
   '/applications/:id/decision',
   requireAnalyst,
   validateBody(decisionBodySchema),
   patchApplicationDecision
 );
-router.get('/applications/:id/chat/history', getHistory);
+router.get('/applications/:id/chat/history', requireReviewer, getHistory);
 router.post('/applications/:id/chat', requireAnalyst, postChat);
-router.get('/applications/:id', getApplicationById);
+router.get('/applications/:id', requireReviewer, getApplicationById);
 
 export default router;

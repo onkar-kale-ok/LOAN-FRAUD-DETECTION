@@ -134,15 +134,25 @@ export function parseEvaluationResult(payload) {
   return parsed.data;
 }
 
-export async function queryLlm({ query, ...rest }) {
+export async function queryLlm({ query, prompt, pdfBase64 }) {
   if (!LLM_WRAPPER_TOKEN) {
     throw new LlmClientError('LLM_WRAPPER_TOKEN is not configured', { status: 502 });
+  }
+
+  const text = prompt || query;
+  if (!text || typeof text !== 'string') {
+    throw new LlmClientError('LLM prompt is required', { status: 502 });
+  }
+
+  const body = { prompt: text };
+  if (typeof pdfBase64 === 'string' && pdfBase64.length > 0) {
+    body.pdfBase64 = pdfBase64;
   }
 
   try {
     const { data } = await axios.post(
       LLM_WRAPPER_URL,
-      { query, prompt: query, ...rest },
+      body,
       {
         headers: {
           Authorization: `Bearer ${LLM_WRAPPER_TOKEN}`,

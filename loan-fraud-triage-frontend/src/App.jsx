@@ -5,6 +5,7 @@ import Sidebar from './components/layout/Sidebar';
 import Tab1Evaluation from './components/tabs/Tab1Evaluation';
 import Tab2FraudLog from './components/tabs/Tab2FraudLog';
 import Tab3Assistant from './components/tabs/Tab3Assistant';
+import Tab4Network from './components/tabs/Tab4Network';
 import { AppProvider, useAppContext } from './context';
 
 function TabContent() {
@@ -13,6 +14,8 @@ function TabContent() {
   switch (activeTab) {
     case 'fraudLog':
       return <Tab2FraudLog />;
+    case 'network':
+      return <Tab4Network />;
     case 'assistant':
       return <Tab3Assistant />;
     case 'evaluation':

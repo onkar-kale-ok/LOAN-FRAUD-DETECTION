@@ -126,6 +126,7 @@ export default function Tab2FraudLog() {
               className="appearance-none rounded-xl border border-slate-600/70 bg-slate-950/60 py-2.5 pl-9 pr-8 text-sm text-slate-100 outline-none focus:border-teal-400/50 focus:ring-2 focus:ring-teal-400/25"
             >
               <option value="ALL">All risk tiers</option>
+              <option value="BLOCK">Block / Review</option>
               <option value="HIGH">High</option>
               <option value="MEDIUM">Medium</option>
               <option value="LOW">Low</option>

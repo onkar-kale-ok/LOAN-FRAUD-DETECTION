@@ -106,6 +106,20 @@ export default function ApplicationDetailModal({
               <PiiField value={phone} kind="phone" canUnmask={canUnmask} />
             </Field>
             <Field label="Email">{email}</Field>
+            <Field label="Declared address">
+              {pick(record, 'applicant.address', 'evaluationResult.address')}
+            </Field>
+            <Field label="OCR address">
+              {pick(record, 'documentOcr.ocrExtractedAddress', 'evaluationResult.ocrExtractedAddress')}
+            </Field>
+            <Field label="Application timestamp">
+              {formatDate(
+                pick(record, 'applicationTimestamp', 'telemetry.applicationTimestamp')
+              )}
+            </Field>
+            <Field label="Statement summary">
+              {pick(record, 'financials.bankStatementSummary', 'evaluationResult.bankStatementSummary')}
+            </Field>
             <Field label="Income (declared / OCR)">
               {formatCurrency(declared)}
               <span className="mx-1 text-slate-600">/</span>
@@ -135,8 +149,12 @@ export default function ApplicationDetailModal({
                   >
                     <AlertTriangle size={14} className="mt-0.5 shrink-0 text-rose-400" />
                     <div>
-                      <p className="text-sm font-semibold text-rose-200">{flag.label}</p>
-                      <p className="text-xs text-slate-400">{flag.evidence}</p>
+                      <p className="text-sm font-semibold text-rose-200">
+                        {flag.label || flag.code || 'Flag'}
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        {flag.evidence || 'No evidence provided.'}
+                      </p>
                     </div>
                   </li>
                 ))}
