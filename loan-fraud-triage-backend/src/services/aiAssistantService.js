@@ -86,11 +86,8 @@ export function buildAssistantPrompt(record, userMessage) {
 }
 
 export async function askAssistant(record, userMessage) {
-  const query = buildAssistantPrompt(record, userMessage);
-  const data = await queryLlm({
-    query,
-    applicationId: record.applicationId,
-  });
+  const prompt = buildAssistantPrompt(record, userMessage);
+  const data = await queryLlm({ prompt });
 
   const reply = extractAssistantText(data);
   if (!reply) {

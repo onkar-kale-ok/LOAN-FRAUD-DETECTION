@@ -91,10 +91,9 @@ export async function runFraudEngine(inputData, pdfBuffer) {
       ? pdfBuffer.toString('base64')
       : undefined;
 
-  const query = buildQuery(inputData, Boolean(pdfBase64));
+  const prompt = buildQuery(inputData, Boolean(pdfBase64));
   const data = await queryLlm({
-    query,
-    inputData,
+    prompt,
     ...(pdfBase64 ? { pdfBase64 } : {}),
   });
 
