@@ -95,7 +95,19 @@ Keep both processes running. If only the UI is up, scenario load, evaluate, the 
 Open **http://localhost:5173**. Use the header to switch **Analyst** vs **Guest**.
 
 - **UI:** Guest masks PAN/phone/device/IP on detail views. List rows barely show PII.
-- **API:** Only `PATCH .../decision` and `POST .../chat` check `X-User-Role: ANALYST` (otherwise 403). Other routes are not role-gated. This is not full RBAC.
+- **API:** Every `/api/v1/*` route requires header `X-User-Role: ANALYST` or `GUEST`. Missing/unknown role → **403**. Writes (evaluate, decision, chat) are **Analyst only**. This is simulated RBAC (spoofable header), not real auth.
+
+| Method | Path | ANALYST | GUEST | Notes |
+| --- | --- | --- | --- | --- |
+| `GET` | `/health` | yes | yes | Public liveness (no `/api`, no role) |
+| `GET` | `/api/v1/scenarios` | yes | yes | Presets |
+| `GET` | `/api/v1/applications` | yes | yes | List |
+| `GET` | `/api/v1/applications/:id` | yes | yes | Details |
+| `GET` | `/api/v1/applications/:id/chat/history` | yes | yes | Read history |
+| `GET` | `/api/v1/network` | yes | yes | Ring graph |
+| `POST` | `/api/v1/evaluate` | yes | **403** | New scoring |
+| `PATCH` | `/api/v1/applications/:id/decision` | yes | **403** | Save decision |
+| `POST` | `/api/v1/applications/:id/chat` | yes | **403** | Send chat |
 
 ### Tab 1 — Risk Triage (evaluate)
 
@@ -137,14 +149,15 @@ Chat is disabled until you select an evaluated application.
 
 | Method | Path | Used by |
 | --- | --- | --- |
-| `GET` | `/health` | Liveness (no `/api` prefix) |
-| `GET` | `/api/v1/scenarios` | Tab 1 presets |
-| `POST` | `/api/v1/evaluate` | Tab 1 run evaluation (`multipart`, field `bankStatement`) |
-| `GET` | `/api/v1/network` | Network tab (shared device/phone/email/address/employer) |
-| `GET` | `/api/v1/applications/:id` | Tab 2 details |
-| `PATCH` | `/api/v1/applications/:id/decision` | Tab 2 decision |
-| `GET` | `/api/v1/applications/:id/chat/history` | Tab 3 history |
-| `POST` | `/api/v1/applications/:id/chat` | Tab 3 send message |
+| `GET` | `/health` | Liveness (no `/api` prefix; no role) |
+| `GET` | `/api/v1/scenarios` | Tab 1 presets (Analyst + Guest) |
+| `POST` | `/api/v1/evaluate` | Tab 1 run evaluation — **Analyst** |
+| `GET` | `/api/v1/applications` | Tab 2 / Tab 3 list (Analyst + Guest) |
+| `GET` | `/api/v1/network` | Network tab (Analyst + Guest) |
+| `GET` | `/api/v1/applications/:id` | Tab 2 details (Analyst + Guest) |
+| `PATCH` | `/api/v1/applications/:id/decision` | Tab 2 decision — **Analyst** |
+| `GET` | `/api/v1/applications/:id/chat/history` | Tab 3 history (Analyst + Guest) |
+| `POST` | `/api/v1/applications/:id/chat` | Tab 3 send — **Analyst** |
 
 ---
 

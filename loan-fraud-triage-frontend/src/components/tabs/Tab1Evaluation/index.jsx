@@ -69,7 +69,7 @@ function apiScenarioToFormData(scenario) {
 }
 
 export default function Tab1Evaluation() {
-  const { evaluatedIds } = useAppContext();
+  const { evaluatedIds, userRole } = useAppContext();
   const [selectedScenarioId, setSelectedScenarioId] = useState('');
   const [viewMode, setViewMode] = useState('form');
   const [formData, setFormData] = useState({ ...emptyApplicationForm });
@@ -219,6 +219,7 @@ export default function Tab1Evaluation() {
   };
 
   const handleAnalyze = async () => {
+    if (userRole !== 'ANALYST') return;
     setSubmitAttempted(true);
     if (jsonError) return;
     const errors = validateForm(formData);
@@ -305,7 +306,7 @@ export default function Tab1Evaluation() {
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <Button
             onClick={handleAnalyze}
-            disabled={loading || !!jsonError}
+            disabled={loading || !!jsonError || userRole !== 'ANALYST'}
             size="lg"
           >
             {loading ? (
@@ -315,6 +316,11 @@ export default function Tab1Evaluation() {
             )}
             Run AI Fraud Evaluation
           </Button>
+          {userRole !== 'ANALYST' && (
+            <p className="text-sm text-amber-300">
+              Guest can view presets and results already on screen; running a new evaluation requires Analyst.
+            </p>
+          )}
           {error && <p className="text-sm text-rose-300">{error}</p>}
           {jsonError && (
             <p className="text-sm text-red-500">

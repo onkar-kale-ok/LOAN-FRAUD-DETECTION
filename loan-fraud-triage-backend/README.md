@@ -18,4 +18,9 @@ Server: **http://localhost:5000**. `GET /health` for liveness. CORS: `http://loc
 
 Fraud scoring and chat share `src/services/llmClient.js`. Invalid evaluation JSON from the wrapper is a 502.
 
-`PATCH /api/v1/applications/:id/decision` and `POST /api/v1/applications/:id/chat` require header `X-User-Role: ANALYST`. Other routes are not role-gated. Guest PII masking is frontend-only.
+All `/api/v1` routes require `X-User-Role: ANALYST` or `GUEST`. Missing header → 403.
+
+- **Guest:** GET scenarios, applications, application by id, chat history, network.
+- **Analyst:** all of the above plus `POST /evaluate`, `PATCH .../decision`, `POST .../chat`.
+
+PII masking in the UI is still frontend-only. The header is simulated RBAC, not login.

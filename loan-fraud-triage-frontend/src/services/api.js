@@ -11,10 +11,8 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const role = localStorage.getItem('userRole');
-    if (role) {
-      config.headers['X-User-Role'] = role;
-    }
+    const role = localStorage.getItem('userRole') || 'ANALYST';
+    config.headers['X-User-Role'] = role;
     if (typeof FormData !== 'undefined' && config.data instanceof FormData) {
       if (typeof config.headers?.delete === 'function') {
         config.headers.delete('Content-Type');

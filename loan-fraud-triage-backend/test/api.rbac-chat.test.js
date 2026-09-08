@@ -43,6 +43,34 @@ describe('POST /api/v1/applications/:id/chat', () => {
   });
 });
 
+describe('GET /api/v1/applications role gate', () => {
+  it('returns 403 when X-User-Role is missing', async () => {
+    const res = await request(app).get('/api/v1/applications');
+    assert.equal(res.status, 403);
+  });
+
+  it('returns 200 for Guest', async () => {
+    const res = await request(app).get('/api/v1/applications').set(guest);
+    assert.equal(res.status, 200);
+    assert.equal(res.body.success, true);
+  });
+
+  it('returns 200 for Analyst', async () => {
+    const res = await request(app).get('/api/v1/applications').set(analyst);
+    assert.equal(res.status, 200);
+  });
+});
+
+describe('POST /api/v1/evaluate role gate', () => {
+  it('returns 403 for Guest', async () => {
+    const res = await request(app)
+      .post('/api/v1/evaluate')
+      .set(guest)
+      .send({ payload: '{}' });
+    assert.equal(res.status, 403);
+  });
+});
+
 describe('PATCH /api/v1/applications/:id/decision', () => {
   it('returns 403 for Guest role', async () => {
     const res = await request(app)

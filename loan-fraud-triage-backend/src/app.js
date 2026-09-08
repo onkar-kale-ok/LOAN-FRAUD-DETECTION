@@ -8,6 +8,8 @@ const app = express();
 app.use(
   cors({
     origin: FRONTEND_ORIGIN,
+    allowedHeaders: ['Content-Type', 'Accept', 'X-User-Role'],
+    methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
   })
 );
 app.use(express.json());
